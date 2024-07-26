@@ -1,0 +1,194 @@
+'use strict';
+
+// function calcAge(birthYear) {
+//   const age = 2024 - birthYear;
+
+//   function printAge() {
+//     const output = `Your name is ${firstName}, you are ${age} years old, born in ${birthYear}`;
+//     console.log(output);
+
+//     if (birthYear >= 1981 && birthYear <= 1996) {
+//       const str = `oh, you are a millenial, ${firstName}`;
+//       console.log(str);
+//     }
+//   }
+//   printAge();
+
+//   return age;
+// }
+
+// const firstName = `Aravind`;
+// calcAge(1996);
+
+// // HOISTING IN JS
+
+// console.log(me); // undefined
+// console.log(job); //Cannot access 'job' before initialization
+// console.log(year); //Cannot access 'year' before initialization
+
+// ^ using variables before initialising (deadzone)
+// var me = `Aravind`;
+// let job = `Developer`;
+// const year = 1996;
+
+// console.log(addDeclaration(1, 2)); // function declaration works as the value is hoisted and is available throughout the scope
+// console.log(addExpression(1, 2));
+// //Cannot access 'addExpression' before initialization
+// console.log(addArrow(1, 2));
+//Cannot access 'addArrow' before initialization
+
+// function addDeclaration(a, b) {
+//   return a + b;
+// }
+
+// const addExpression = function (a, b) {
+//   return a + b;
+// };
+
+// const addArrow = (a, b) => a + b;
+
+// BEST PRACTISE TO DECLARE EVERYTHING INCLUSING FUNCTION DECLARATIONS BEFORE USING THEM __ CLEAN && REDABLE CODE __
+
+// use `window` in console__ to see global object in js
+
+// THIS KEYWORD !!!!
+
+// console.log(this);
+
+// const calcAge = function (birthYear) {
+//   console.log(2024 - birthYear);
+//   console.log(this);
+// };
+// calcAge(1996); // this - undefined
+
+// const calcAgeArrow = birthyear => {
+//   console.log(2024 - birthyear);
+//   console.log(this);
+// };
+// calcAgeArrow(1996); // this - window (global scope)
+
+// const aravind = {
+//   firstName: `Aravind`,
+//   birthYear: 1996,
+//   age: function () {
+//     console.log(2024 - this.birthYear); // this - Jonas (.birthYear)
+//   },
+// };
+
+// aravind.age();
+
+// const apoorva = {
+//   firstName: `Apoorva`,
+//   birthYear: 1997,
+// };
+
+// apoorva.age = aravind.age;
+
+// apoorva.age(); //calculates age for apoorva seperately because the this keyword is not static, but dynamic!
+
+// IF WE STORE THE FUNCTION OUTSIDE
+
+// const f = aravind.age;
+// f(); // NOW THIS IS UNDEFINED AS IT IS NOT ATTACHED TO ANY OBJECT LIKE APOORVA!
+
+// IN DEPTH - ARROW FUNCTION VS REGULAR FUNCTION (THIS KEYWORD)
+
+// const aravind = {
+//   firstName: `Aravind`,
+//   birthYear: 1996,
+//   age: function () {
+//     console.log(this);
+//     console.log(2024 - this.birthYear);
+//   },
+
+//   greet: () => console.log(`Hey ${this.firstName}`),
+// };
+
+// aravind.greet(); // OUTPUT - Hey undefined (BECAUSE ARROW FUNCTION DOES NOT HAVE ITS OWN THIS KEYWORD! EVEN INSIDE THE BLOCK CODE OF AN OBJECT!)(INSTEAD LOOKS FOR GLOBAL SCOPE WINDOW IF THERE IS A DECLARED GREET VARIABLE OUTSIDE (GLOBALLY))
+
+//FUNCTION INSIDE FUNCTION THE THIS KEYWORD IS STILL UNDEFINED AS IT IS A NEW FUNCTIONS THIS KEYWORD
+//CAN FIX THIS USING THE TWO SOLUTIONS BELOW
+
+//SOLUTION ONE :
+// const aravind = {
+//   firstName: `Aravind`,
+//   birthYear: 1996,
+//   age: function () {
+//     console.log(this);
+//     console.log(2024 - this.birthYear);
+//     //USING AN EXTRA VARIABLE DOWN HERE TO SELF AND USING IT (SELF WILL BE EQUAL TO THIS )(WILL BE PRESENT IN THE SECOND FUNCTIONS SCOPE CHAIN)
+//     //PRE ES6 RELEASE SOLUTION!
+//     const self = this;
+//     const isMillenial = function () {
+//       console.log(this);
+//       console.log(this.birthYear >= 1981 && this.birthYear <= 1996);
+//     };
+//     isMillenial();
+//   },
+
+//   greet: () => console.log(`Hey ${this.firstName}`),
+// };
+
+// aravind.age();
+
+//SOLUTION TWO :
+//USING ARROW FUNCTION AS ITS THIS KEYWORD IS NON EXISTANT AND IT ADOPTS THIS KEYWORD FROM PARENT SCOPE !! imp***
+// const aravind = {
+//   firstName: `Aravind`,
+//   birthYear: 1996,
+//   age: function () {
+//     console.log(this);
+//     console.log(2024 - this.birthYear);
+//     const self = this;
+
+//     //USING ARROW FUNCTION SO IT CAN ADOPT ITS THIS KEYWORD FROM PARENT SCOPE !!
+//     const isMillenial = () => {
+//       console.log(this);
+//       console.log(this.birthYear >= 1981 && this.birthYear <= 1996);
+//     };
+//     isMillenial();
+//   },
+
+//   greet: () => console.log(`Hey ${this.firstName}`),
+// };
+
+// aravind.age();
+
+//ARGUMENTS KEYWORD
+
+// ONLY AVAILABLE IN REGULAR FUNCTIONS!
+// LOGS ARGUMENTS A, B
+// const addExpression = function (a, b) {
+//   console.log(arguments);
+//   return a + b;
+// };
+
+// console.log(addExpression(1, 2));
+
+//PRIMITIVES VS OBJECTS
+
+//PRIMITIVE TYPE
+// LASTNAME AND OLD LAST NAME SEPERATELY CREATE VALUES ( STACK)
+// let lastName = `Tadikonda`;
+// let oldLastName = lastName;
+// lastName = `Pattisapu`;
+// console.log(lastName, oldLastName);
+
+// //REFERENCE TYPE
+
+// const apoorva = {
+//   firstname: `Apoorva`,
+//   lastName: `Tadikonda`,
+//   age: 27,
+// };
+// const marriedApoorva = apoorva;
+// marriedApoorva.lastName = `Pattisapu`;
+// console.log(apoorva, marriedApoorva);
+
+// //SO OBJECTS CANT BE CHNAGED! THERE ARE FEW WAYS :
+// // HERE IS ONE
+
+// //COPYING OBJECTS
+
+// const apoorvaCopy = object.assign({}, jessica2);
+// jessicaCopy.lastName = `Pattisapu`;
